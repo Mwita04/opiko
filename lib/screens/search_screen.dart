@@ -14,14 +14,25 @@ class _SearchScreenState extends State<SearchScreen> {
   final _startSearchFieldController = TextEditingController();
   final _endSearchFieldController = TextEditingController();
 
-  // GooglePlace googlePlace;
+  late GooglePlace googlePlace;
+  List <AutocompletePredicton> predictions= [];
 
   @override
   void initState() {
     //TO DO: Implement initState
     super.initState();
-    String apiKey = '';
-    //googlePlace = GooglePlace(apiKEY);
+    String apiKey = 'AIzaSyBXYcgLCHk_3bkpBBsGFTPC9jDGkGCNUPM';
+    googlePlace = GooglePlace(apiKey);
+  }
+
+  void autocompleteSearch(String value) async {
+    var result = await googlePlace.autocomplete.get(value);
+    if(result =/= null && result.prediction =/= null && mounted){
+      print(result.prediction!.first.description);
+      setState(() {
+        predictions = result.predictions!;
+      });
+    }
   }
 
   @override
@@ -48,6 +59,14 @@ class _SearchScreenState extends State<SearchScreen> {
                 fillColor: Colors.grey[200],
                 border: InputBorder.none,
               ),
+              onChanged: (value) {
+                if (value.isNotEmpty) {
+                  // Places Api
+                  autocompleteSearch(value);
+                } else {
+                  //clear out the results
+                }
+              },
             ),
             const SizedBox(height: 10),
             TextField(
