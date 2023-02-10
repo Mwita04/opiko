@@ -95,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SearchScreen(),
+                    builder: (context) => const SearchScreen(),
                     fullscreenDialog: true,
                   ),
                 );
